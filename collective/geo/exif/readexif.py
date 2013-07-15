@@ -32,7 +32,7 @@ def _convert_to_degress(value):
     min_num, min_denom = value[1]
     m = float(min_num) / float(min_denom)
 
-    sec_num, sec_denom = value[1]
+    sec_num, sec_denom = value[2]
     s = float(sec_num) / float(sec_denom)
 
     return d + (m / 60.0) + (s / 3600.0)

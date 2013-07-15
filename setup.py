@@ -26,6 +26,8 @@ setup(name='collective.geo.exif',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'collective.geo.settings',
+          'collective.geo.contentlocations',
       ],
       entry_points="""
       # -*- Entry points: -*-

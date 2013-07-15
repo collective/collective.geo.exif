@@ -1,15 +1,13 @@
 import logging
 logger = logging.getLogger('collective.geo.exif')
-from PIL import Image
+
 
 from five.formlib import formbase
 
 from zope import interface, schema
 from zope.formlib import form
 
-from collective.geo.contentlocations.interfaces import IGeoManager
-from collective.geo.settings.interfaces import IGeoCustomFeatureStyle, IGeoFeatureStyle
-from collective.geo.exif.readexif import get_exif_data, get_lat_lon
+from collective.geo.exif.utils import set_geoannotation
 
 
 class IExifSchema(interface.Interface):
@@ -41,25 +39,10 @@ class ExtractExifForm(formbase.PageForm):
 
         """
         # Put here the feedback to show in case the form submission succeeded
-        geo = IGeoManager(self.context)
-        style = IGeoCustomFeatureStyle(self.context)
-        image = Image.open(self.context.getFile().getIterator())
-        exif_data = get_exif_data(image)
-        lat, lon = get_lat_lon(exif_data)
-        if lat and lon and geo.isGeoreferenceable():
-            geo.setCoordinates('Point', (lon, lat))
-            style.geostyles.data['use_custom_styles']=True
-            import ipdb; ipdb.set_trace()
-            if data.get('custom_icon'):
-                url = 'string:' + self.context.absolute_url() + '/'
-                style.geostyles.data['marker_image'] = url + data['custom_icon']
-                style.geostyles.data['marker_image_size'] = 1.0
-            style.geostyles.update(style.geostyles)
-            self.status = 'Coordinates set'
-        else:
-            self.status = 'Image has no EXIF GPS information'
-        url = self.context.absolute_url()
-        url += '/view'
+        icon_url = 'string:' + self.context.absolute_url() + '/' + data.get('custom_icon')
+        msg = set_geoannotation(self.context, icon_url)
+        self.status = msg
+        url = self.context.absolute_url() + '/view'
         self.request.response.redirect(url)
 
     def handle_failure(self, action, data, errors):
