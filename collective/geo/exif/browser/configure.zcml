@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:cache="http://namespaces.zope.org/cache"
+    i18n_domain="iwlearn.project">
+
+  <include package="plone.app.contentmenu" />
+  <include package="Products.CMFCore" file="permissions.zcml" />
+  <include package="z3c.caching" file="meta.zcml" />
+
+    <browser:page
+          for="Products.ATContentTypes.interfaces.IATImage"
+          name="extract_exif.html"
+          class=".forms.ExtractExifForm"
+          permission="cmf.ModifyPortalContent"
+          />
+
+
+</configure>
