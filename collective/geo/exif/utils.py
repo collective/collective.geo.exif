@@ -8,11 +8,14 @@ from collective.geo.exif.readexif import get_exif_data, get_lat_lon
 
 
 def set_geoannotation(context, icon):
-        geo = IGeoManager(context)
-        style = IGeoCustomFeatureStyle(context)
-        image = Image.open(context.getFile().getIterator())
-        exif_data = get_exif_data(image)
-        lat, lon = get_lat_lon(exif_data)
+        try:
+            geo = IGeoManager(context)
+            style = IGeoCustomFeatureStyle(context)
+            image = Image.open(context.getFile().getIterator())
+            exif_data = get_exif_data(image)
+            lat, lon = get_lat_lon(exif_data)
+        except:
+            return None
         if lat and lon and geo.isGeoreferenceable():
             geo.setCoordinates('Point', (lon, lat))
             style.geostyles.data['use_custom_styles']=True
