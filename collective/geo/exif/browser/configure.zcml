@@ -10,8 +10,8 @@
   <include package="z3c.caching" file="meta.zcml" />
 
     <browser:page
-          for="Products.ATContentTypes.interfaces.IATImage"
-          name="extract_exif.html"
+          for="*"
+          name="extract_exif_geoannotations.html"
           class=".forms.ExtractExifForm"
           permission="cmf.ModifyPortalContent"
           />

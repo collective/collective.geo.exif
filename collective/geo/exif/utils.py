@@ -24,11 +24,12 @@ def set_geoannotation(context, icon):
                 style.geostyles.data['marker_image_size'] = 1.0
             style.geostyles.update(style.geostyles)
             logger.info('annotated %s with lat %f, lon %f' % (context.getId(), lat, lon))
-            msg = 'Coordinates set'
+            success = True
         else:
-            msg = 'Image has no EXIF GPS information'
+            success = False
             logger.info('Image has no EXIF GPS information')
+        return success
 
 def handle_add_image(context, event):
-    icon_url = 'string:' + context.absolute_url() + '/image_thumb'
+    icon_url = 'string:' + context.absolute_url() + '/image_icon'
     set_geoannotation(context, icon_url)
