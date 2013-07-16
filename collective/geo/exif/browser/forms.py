@@ -14,6 +14,15 @@ from collective.geo.exif.utils import set_geoannotation
 
 class IExifSchema(interface.Interface):
 
+
+    only_images_without_geom = schema.Bool(
+        title=u'Only Images without Geometry',
+        description=u'Do not overwrite coordinates of images that have geometries',
+        required=False,
+        readonly=False,
+        default=True,
+        )
+
     use_image_as_marker = schema.Bool(
         title=u'Use Image as marker',
         description=u'If checked the image will be set as the marker',
@@ -73,6 +82,12 @@ class ExtractExifForm(formbase.PageForm):
             brains = self.portal_catalog(portal_type='Image', path=path)
             i=0
             for brain in brains:
+                if data.get('only_images_without_geom'):
+                    try:
+                        if brain.zgeo_geometry['coordinates']:
+                            continue
+                    except:
+                        pass
                 obj = brain.getObject()
                 success = self.set_exif_as_geoannotation(obj,
                     data.get('use_image_as_marker'), data.get('image_size'))
