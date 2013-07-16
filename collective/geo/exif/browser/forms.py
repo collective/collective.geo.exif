@@ -81,7 +81,9 @@ class ExtractExifForm(formbase.PageForm):
             path = '/'.join(self.context.getPhysicalPath())
             brains = self.portal_catalog(portal_type='Image', path=path)
             i=0
+            j=0
             for brain in brains:
+                j+=1
                 if data.get('only_images_without_geom'):
                     try:
                         if brain.zgeo_geometry['coordinates']:
@@ -93,7 +95,7 @@ class ExtractExifForm(formbase.PageForm):
                     data.get('use_image_as_marker'), data.get('image_size'))
                 if success:
                     i+=1
-            msg = 'annotated %i Images' %i
+            msg = 'annotated %i of %i Images' %(i, j)
         IStatusMessage(self.request).addStatusMessage(msg, type='info')
         url = self.context.absolute_url() + '/view'
         self.request.response.redirect(url)
