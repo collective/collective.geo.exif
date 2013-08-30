@@ -18,7 +18,7 @@ documentation_.
 .. _documentation: http://plone.org/documentation/kb/installing-add-ons-quick-how-to
 
 The short version is:
-++++++++++++++++++++++
+----------------------
 
 Add ``collective.geo.exif`` to the list of eggs to install, e.g.
 
